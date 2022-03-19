@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../api_calls.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -12,6 +14,17 @@ class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final _midSizeFont = const TextStyle(fontSize: 17.0);
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +43,7 @@ class _LoginFormState extends State<LoginForm> {
           // Email text field
           TextFormField(
             decoration: const InputDecoration(
-              hintText: 'Email',
+              hintText: AutofillHints.email,
             ),
             validator: (String? value) {
               if (value == null || value.isEmpty) {
@@ -42,8 +55,9 @@ class _LoginFormState extends State<LoginForm> {
           // Password text field
           TextFormField(
             decoration: const InputDecoration(
-              hintText: 'Password',
+              hintText: AutofillHints.password,
             ),
+            obscureText: true,
             validator: (String? value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your password';
@@ -56,11 +70,19 @@ class _LoginFormState extends State<LoginForm> {
             child: SizedBox(
               width: 100.0,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
                   if (_formKey.currentState!.validate()) {
                     // Process data.
+                    String token = await login(emailController.text, passwordController.text);
+                    if(token == null || token.isEmpty) {
+                      // TODO: Error try again
+                    }
+                    else {
+                      final savedPrefs = await SharedPreferences.getInstance();
+                      await savedPrefs.setString('jwt', 'token');
+                    }
                   }
                 },
                 child: const Text('Log in'),
