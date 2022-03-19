@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api_calls.dart';
+import '../utils.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -42,6 +42,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           // Email text field
           TextFormField(
+            controller: emailController,
             decoration: const InputDecoration(
               hintText: AutofillHints.email,
             ),
@@ -54,6 +55,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
           // Password text field
           TextFormField(
+            controller: passwordController,
             decoration: const InputDecoration(
               hintText: AutofillHints.password,
             ),
@@ -74,14 +76,13 @@ class _LoginFormState extends State<LoginForm> {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
                   if (_formKey.currentState!.validate()) {
-                    // Process data.
-                    String token = await login(emailController.text, passwordController.text);
-                    if(token == null || token.isEmpty) {
+                    login(emailController.text, passwordController.text);
+                    String token = await getJwtToken();
+                    if(token.isEmpty) {
                       // TODO: Error try again
                     }
                     else {
-                      final savedPrefs = await SharedPreferences.getInstance();
-                      await savedPrefs.setString('jwt', 'token');
+                      setJwtToken(token);
                     }
                   }
                 },
@@ -94,7 +95,7 @@ class _LoginFormState extends State<LoginForm> {
             width: 100.0,
             child: ElevatedButton(
               onPressed: () {
-                // Go to register route.
+                // TODO: setState(() {});
               },
               child: const Text('Register'),
             ),

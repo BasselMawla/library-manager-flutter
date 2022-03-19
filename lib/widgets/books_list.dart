@@ -52,18 +52,20 @@ class _BooksListState extends State<BooksList> {
 
         final index = i ~/ 2; // To ignore dividers
         Map currentBook = booksList[index];
-        String bookInfo = currentBook['title'].toString() +
-            ' by ' +
-            currentBook['author'].toString();
+        String title = currentBook['title'].toString();
+        String author = currentBook['author'].toString();
         String stockInfo = ' Stock: ' + currentBook['stock'].toString();
         return ListTile(
           leading: const Icon(Icons.book),
           title: Text(
-            bookInfo,
+            title,
             style: _biggerFont,
           ),
           trailing: Text(
             stockInfo,
+          ),
+          subtitle: Text(
+            author,
           ),
         );
       },
