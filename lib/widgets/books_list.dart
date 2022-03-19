@@ -26,11 +26,8 @@ class _BooksListState extends State<BooksList> {
         future: allBooks,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print(snapshot.data!);
             return buildBookListView(snapshot.data!);
           } else if (snapshot.hasError) {
-            print('ERROR');
-            print(snapshot.error);
             return Text('${snapshot.error}');
           }
 

@@ -1,4 +1,5 @@
-import 'package:cem7052_library/routes/books_list.dart';
+import 'package:cem7052_library/widgets/books_list.dart';
+import 'package:cem7052_library/widgets/login.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -8,14 +9,16 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  final colorPrimary = const Color(0xFF2679BD);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Coventry University Library',
       theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF2679BD),
+        appBarTheme: AppBarTheme(
+          backgroundColor: colorPrimary,
         ),
       ),
       home: buildHomeTabController(isLibrarian: true),
@@ -27,7 +30,10 @@ class MyApp extends StatelessWidget {
       length: isLibrarian ? 3 : 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Coventry University Library'),
+          title: const Text(
+            'Coventry University Library',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+          ),
           actions: const [
             Icon(Icons.search),
             Padding(
@@ -53,7 +59,15 @@ class MyApp extends StatelessWidget {
             // Students tab, if librarian
             if (isLibrarian) const Center(child: Text('STUDENTS')),
             // Profile tab
-            const Center(child: Text('PROFILE')),
+            Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints.tight(const Size(300.0, 300.0)),
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: LoginForm(),
+                ),
+              ),
+            ),
           ],
         ),
       ),
