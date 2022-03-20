@@ -19,6 +19,20 @@ Future<Map> getAllBooks() async {
   return books;
 }
 
+Future<Map> getAllStudents() async {
+  var url = Uri.parse(baseUrl + 'students');
+  final token = await getJwtToken();
+
+  final response = await http.get(url, headers: {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ' + token,
+  });
+
+  Map books = jsonDecode(response.body);
+
+  return books;
+}
+
 void login(String username, String password) async {
   var url = Uri.parse(baseUrl + 'accounts');
 
