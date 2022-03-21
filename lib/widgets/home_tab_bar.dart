@@ -13,18 +13,14 @@ class HomeTabBar extends StatefulWidget {
 }
 
 class _HomeTabBarState extends State<HomeTabBar> {
-  late Future<bool> isLibrarian;
-
-  @override
-  void initState() {
-    super.initState();
-    isLibrarian = getIsLibrarian();
+  void refresh(bool isLibrarian) {
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: isLibrarian,
+      future: getIsLibrarian(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return buildHomeTabController(snapshot.data!);
@@ -84,9 +80,9 @@ class _HomeTabBarState extends State<HomeTabBar> {
         Center(
           child: ConstrainedBox(
             constraints: BoxConstraints.tight(const Size(300.0, 300.0)),
-            child: const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: LoginForm(),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: LoginForm(refreshParent: refresh),
             ),
           ),
         ),

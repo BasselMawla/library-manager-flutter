@@ -33,7 +33,7 @@ Future<Map> getAllStudents() async {
   return books;
 }
 
-void login(String username, String password) async {
+Future<void> login(String username, String password) async {
   var url = Uri.parse(baseUrl + 'accounts');
 
   final response = await http.get(
@@ -49,6 +49,6 @@ void login(String username, String password) async {
   String token = body['jwt'];
   bool isLibrarian = body['is_librarian'] == 1 ? true : false;
 
-  setJwtToken(token);
-  setIsLibrarian(isLibrarian);
+  await setJwtToken(token);
+  await setIsLibrarian(isLibrarian);
 }

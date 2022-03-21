@@ -1,5 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+//bool _isLibrarian = false;
+
 Future<String> getJwtToken() async {
   final savedPrefs = await SharedPreferences.getInstance();
   try {
@@ -13,7 +15,7 @@ Future<String> getJwtToken() async {
   }
 }
 
-void setJwtToken(String token) async {
+Future<void> setJwtToken(String token) async {
   final savedPrefs = await SharedPreferences.getInstance();
   savedPrefs.setString('jwt', token);
 }
@@ -31,7 +33,7 @@ Future<bool> getIsLibrarian() async {
   }
 }
 
-void setIsLibrarian(bool isLibrarian) async {
+Future<void> setIsLibrarian(bool isLibrarian) async {
   final savedPrefs = await SharedPreferences.getInstance();
   savedPrefs.setBool('isLibrarian', isLibrarian);
 }

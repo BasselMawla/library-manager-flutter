@@ -4,7 +4,9 @@ import '../api_calls.dart';
 import '../utils.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({Key? key}) : super(key: key);
+  final Function refreshParent;
+
+  const LoginForm({Key? key, required this.refreshParent}) : super(key: key);
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -76,13 +78,14 @@ class _LoginFormState extends State<LoginForm> {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
                   if (_formKey.currentState!.validate()) {
-                    login(emailController.text, passwordController.text);
+                    await login(emailController.text, passwordController.text);
                     String token = await getJwtToken();
-                    if(token.isEmpty) {
+                    if (token.isEmpty) {
                       // TODO: Error try again
-                    }
-                    else {
+                    } else {
                       setJwtToken(token);
+                      bool isLibrarian = await getIsLibrarian();
+                      widget.refreshParent(isLibrarian);
                     }
                   }
                 },
@@ -94,8 +97,11 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(
             width: 100.0,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // TODO: setState(() {});
+                bool isLibrarian = await getIsLibrarian();
+
+                widget.refreshParent(isLibrarian);
               },
               child: const Text('Register'),
             ),
