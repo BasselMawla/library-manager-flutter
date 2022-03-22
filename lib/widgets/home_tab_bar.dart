@@ -101,7 +101,6 @@ class _HomeTabBarState extends State<HomeTabBar> {
       return FloatingActionButton(
         onPressed: () {
           // Add a book
-          print('pressed');
           _pushAddBookRoute(context);
         },
         tooltip: 'Add a book',
@@ -113,7 +112,6 @@ class _HomeTabBarState extends State<HomeTabBar> {
   }
 
   void _pushAddBookRoute(context) {
-    print('in');
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (context) {
