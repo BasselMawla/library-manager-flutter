@@ -64,8 +64,11 @@ class _BooksListState extends State<BooksList> {
           trailing: Text(
             stockInfo,
           ),
-          subtitle: Text(
-            author,
+          subtitle: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6.0),
+            child: Text(
+              author,
+            ),
           ),
         );
       },

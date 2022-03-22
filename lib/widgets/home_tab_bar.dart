@@ -2,6 +2,7 @@ import 'package:cem7052_library/widgets/students_list.dart';
 import 'package:flutter/material.dart';
 
 import '../utils.dart';
+import 'add_book.dart';
 import 'books_list.dart';
 import 'login.dart';
 
@@ -39,9 +40,12 @@ class _HomeTabBarState extends State<HomeTabBar> {
       length: isLibrarian ? 3 : 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
+          backgroundColor: Theme.of(context).primaryColor,
+          title: Text(
             'Coventry University Library',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
+            style: Theme.of(context)
+                .textTheme
+                .headline1, //TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
           ),
           actions: const [
             Icon(Icons.search),
@@ -52,7 +56,6 @@ class _HomeTabBarState extends State<HomeTabBar> {
             ),
           ],
           bottom: TabBar(
-            indicatorColor: const Color(0xFF2679BD),
             tabs: [
               const Tab(text: 'BOOKS', icon: Icon(Icons.book)),
               if (isLibrarian)
@@ -71,7 +74,10 @@ class _HomeTabBarState extends State<HomeTabBar> {
     return TabBarView(
       children: [
         // Books tab
-        const BooksList(),
+        Scaffold(
+          body: const BooksList(),
+          floatingActionButton: buildAddBookButton(isLibrarian),
+        ),
 
         // Students tab, if librarian
         if (isLibrarian) const StudentsList(),
@@ -87,6 +93,39 @@ class _HomeTabBarState extends State<HomeTabBar> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget buildAddBookButton(bool isLibrarian) {
+    if (isLibrarian) {
+      return FloatingActionButton(
+        onPressed: () {
+          // Add a book
+          print('pressed');
+          _pushAddBookRoute(context);
+        },
+        tooltip: 'Add a book',
+        backgroundColor: Theme.of(context).primaryColor,
+        child: const Icon(Icons.add),
+      );
+    }
+    return Container();
+  }
+
+  void _pushAddBookRoute(context) {
+    print('in');
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Add a book'),
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+            body: const AddBook(),
+          );
+        },
+      ),
     );
   }
 }
