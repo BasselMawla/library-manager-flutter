@@ -52,7 +52,7 @@ class _StudentsListState extends State<StudentsList> {
 
         final index = i ~/ 2; // To ignore dividers
         Map currentStudent = studentsList[index];
-        String name = currentStudent['first_name'].toString() +
+        String studentName = currentStudent['first_name'].toString() +
             ' ' +
             currentStudent['last_name'].toString();
 
@@ -64,14 +64,33 @@ class _StudentsListState extends State<StudentsList> {
         return ListTile(
           leading: const Icon(Icons.person),
           title: Text(
-            name,
+            studentName,
             style: _biggerFont,
           ),
           trailing: Text(
             borrowingString,
           ),
+          onTap: () {
+            _pushStudentRoute(context, studentName);
+          },
         );
       },
+    );
+  }
+
+  void _pushStudentRoute(context, String studentName, int accountId) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Borrowing Record'),
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+            body: const StudentRecord(accountId, studentName),
+          );
+        },
+      ),
     );
   }
 }

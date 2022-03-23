@@ -71,3 +71,17 @@ Future<bool> addBook(Map<String, dynamic> bookInfo) async {
   }
   return false;
 }
+
+Future<Map> getStudentRecord() async {
+  var url = Uri.parse(baseUrl + 'student');
+  final token = await getJwtToken();
+
+  final response = await http.get(url, headers: {
+    'Accept': 'application/json',
+    'Authorization': 'Bearer ' + token,
+  });
+
+  Map books = jsonDecode(response.body);
+
+  return books;
+}
