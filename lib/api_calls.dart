@@ -52,3 +52,22 @@ Future<void> login(String username, String password) async {
   await setJwtToken(token);
   await setIsLibrarian(isLibrarian);
 }
+
+Future<bool> addBook(Map<String, dynamic> bookInfo) async {
+  var url = Uri.parse(baseUrl + 'books');
+  final token = await getJwtToken();
+
+  final response = await http.post(
+    url,
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    },
+    body: jsonEncode(bookInfo),
+  );
+
+  if(response.statusCode == 204) {
+    return true;
+  }
+  return false;
+}
