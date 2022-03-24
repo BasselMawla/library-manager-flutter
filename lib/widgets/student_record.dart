@@ -27,7 +27,7 @@ class _StudentRecordState extends State<StudentRecord> {
         future: studentRecord,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Text(snapshot.data!.toString());//buildBookListView(snapshot.data!);
+            return buildStudentRecordView(snapshot.data!);
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
           }
@@ -53,23 +53,24 @@ class _StudentRecordState extends State<StudentRecord> {
 
         final index = i ~/ 2; // To ignore dividers
         Map currentBook = borrowedBooks[index];
-        String title = currentBook['title'].toString();
-        String dueDate = currentBook['due_date'].toString();
-        String stockInfo = ' Stock: ' + currentBook['stock'].toString();
+        String title = currentBook['book_title'].toString();
+        String dueDateString = currentBook['due_date'].toString();
+        final DateTime dueDate = DateTime.parse(dueDateString);
+        bool isLate = dueDate.isBefore(DateTime.now());
+
         return ListTile(
           leading: const Icon(Icons.book),
+          tileColor: isLate ? Colors.red[200] : Colors.white,
           title: Text(
             title,
             style: _biggerFont,
           ),
           trailing: Text(
-            stockInfo,
+            isLate ? 'Overdue by 2 days' : '',
           ),
           subtitle: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6.0),
-            child: Text(
-              author,
-            ),
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text('Due date: ' + dueDateString),
           ),
         );
       },
