@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../api_calls.dart';
-import '../utils.dart';
 
 class StudentRecord extends StatefulWidget {
-  final Function refreshParent;
-
-  const StudentRecord({Key? key, required this.refreshParent}) : super(key: key);
+  final String username, studentName;
+  const StudentRecord(this.username, this.studentName, {Key? key}) : super(key: key);
 
   @override
   State<StudentRecord> createState() => _StudentRecordState();
@@ -19,17 +17,17 @@ class _StudentRecordState extends State<StudentRecord> {
   @override
   void initState() {
     super.initState();
-    studentRecord = getAllBooks();
+    studentRecord = getStudentRecord(widget.username);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<Map>(
-        future: allBooks,
+        future: studentRecord,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return buildBookListView(snapshot.data!);
+            return Text(snapshot.data!.toString());//buildBookListView(snapshot.data!);
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
           }
@@ -41,11 +39,11 @@ class _StudentRecordState extends State<StudentRecord> {
     );
   }
 
-  ListView buildBookListView(Map booksMap) {
-    List booksList = booksMap['books'];
+  ListView buildStudentRecordView(Map studentRecord) {
+    List borrowedBooks = studentRecord['borrowed_books'];
     return ListView.builder(
       padding: const EdgeInsets.all(16.0),
-      itemCount: booksList.length * 2,
+      itemCount: borrowedBooks.length * 2,
       itemBuilder: (context, i) {
         if (i.isOdd) {
           return const Divider(
@@ -54,9 +52,9 @@ class _StudentRecordState extends State<StudentRecord> {
         }
 
         final index = i ~/ 2; // To ignore dividers
-        Map currentBook = booksList[index];
+        Map currentBook = borrowedBooks[index];
         String title = currentBook['title'].toString();
-        String author = currentBook['author'].toString();
+        String dueDate = currentBook['due_date'].toString();
         String stockInfo = ' Stock: ' + currentBook['stock'].toString();
         return ListTile(
           leading: const Icon(Icons.book),

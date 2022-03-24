@@ -28,9 +28,7 @@ Future<Map> getAllStudents() async {
     'Authorization': 'Bearer ' + token,
   });
 
-  Map books = jsonDecode(response.body);
-
-  return books;
+  return jsonDecode(response.body);
 }
 
 Future<void> login(String username, String password) async {
@@ -72,8 +70,8 @@ Future<bool> addBook(Map<String, dynamic> bookInfo) async {
   return false;
 }
 
-Future<Map> getStudentRecord() async {
-  var url = Uri.parse(baseUrl + 'student');
+Future<Map> getStudentRecord(String username) async {
+  var url = Uri.parse(baseUrl + 'students/$username');
   final token = await getJwtToken();
 
   final response = await http.get(url, headers: {
@@ -81,7 +79,5 @@ Future<Map> getStudentRecord() async {
     'Authorization': 'Bearer ' + token,
   });
 
-  Map books = jsonDecode(response.body);
-
-  return books;
+  return jsonDecode(response.body);
 }
