@@ -4,7 +4,9 @@ import '../api_calls.dart';
 
 class StudentRecord extends StatefulWidget {
   final String username, studentName;
-  const StudentRecord(this.username, this.studentName, {Key? key}) : super(key: key);
+
+  const StudentRecord(this.username, this.studentName, {Key? key})
+      : super(key: key);
 
   @override
   State<StudentRecord> createState() => _StudentRecordState();
@@ -59,14 +61,37 @@ class _StudentRecordState extends State<StudentRecord> {
         bool isLate = dueDate.isBefore(DateTime.now());
 
         return ListTile(
-          leading: const Icon(Icons.book),
+          leading: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100.0),
+                  color: Colors.white,
+                ),
+                child: IconButton(
+                  onPressed: () async {
+
+                  },
+                  icon: const Icon(Icons.replay),
+                  tooltip: 'Return book',
+                ),
+              ),
+            ],
+          ),
           tileColor: isLate ? Colors.red[200] : Colors.white,
           title: Text(
             title,
             style: _biggerFont,
           ),
-          trailing: Text(
-            isLate ? 'Overdue by 2 days' : '',
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                isLate ? 'Overdue by\n2 days' : '',
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
           subtitle: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
