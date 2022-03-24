@@ -65,7 +65,7 @@ class _BooksListState extends State<BooksList> {
             stockInfo,
           ),
           subtitle: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 6.0),
+            padding: const EdgeInsets.only(top: 4.0),
             child: Text(
               author,
             ),

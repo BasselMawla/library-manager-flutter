@@ -64,19 +64,12 @@ class _StudentRecordState extends State<StudentRecord> {
           leading: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100.0),
-                  color: Colors.white,
-                ),
-                child: IconButton(
-                  onPressed: () async {
-
-                  },
-                  icon: const Icon(Icons.replay),
-                  tooltip: 'Return book',
-                ),
-              ),
+              isLate
+                  ? const Tooltip(
+                      message: '2 days late',
+                      child: Icon(Icons.info),
+                    )
+                  : const Icon(Icons.book),
             ],
           ),
           tileColor: isLate ? Colors.red[200] : Colors.white,
@@ -87,15 +80,19 @@ class _StudentRecordState extends State<StudentRecord> {
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                isLate ? 'Overdue by\n2 days' : '',
-                textAlign: TextAlign.center,
+              ElevatedButton(
+                child: const Text('Return'),
+                onPressed: () {},
               ),
             ],
           ),
           subtitle: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: Text('Due date: ' + dueDateString),
+            child: Row(
+              children: [
+                Text('Due date: ' + dueDateString + ' '),
+              ],
+            ),
           ),
         );
       },
