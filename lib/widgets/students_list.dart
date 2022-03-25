@@ -84,12 +84,15 @@ class _StudentsListState extends State<StudentsList> {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (context) {
+          void refresh() {
+            setState(() {});
+          }
           return Scaffold(
             appBar: AppBar(
               title: const Text('Borrowing Record'),
               backgroundColor: Theme.of(context).primaryColor,
             ),
-            body: StudentRecord(username, studentName),
+            body: StudentRecord(username, studentName, refreshParent: refresh),
           );
         },
       ),

@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../api_calls.dart';
 
+// TODO: Add textbox for borrowing with UUID of book
+
 class StudentRecord extends StatefulWidget {
   final String username, studentName;
+  final Function refreshParent;
 
-  const StudentRecord(this.username, this.studentName, {Key? key})
+  const StudentRecord(this.username, this.studentName,
+      {Key? key, required this.refreshParent})
       : super(key: key);
 
   @override
@@ -45,6 +49,7 @@ class _StudentRecordState extends State<StudentRecord> {
     List borrowedBooks = studentRecord['borrowed_books'];
     return ListView.builder(
       padding: const EdgeInsets.all(16.0),
+      
       itemCount: borrowedBooks.length * 2,
       itemBuilder: (context, i) {
         if (i.isOdd) {
@@ -54,11 +59,12 @@ class _StudentRecordState extends State<StudentRecord> {
         }
 
         final index = i ~/ 2; // To ignore dividers
-        Map currentBook = borrowedBooks[index];
-        String title = currentBook['book_title'].toString();
-        String dueDateString = currentBook['due_date'].toString();
+        final Map currentBook = borrowedBooks[index];
+        final bookId = currentBook['book_id'].toString();
+        final title = currentBook['title'].toString();
+        final dueDateString = currentBook['due_date'].toString();
         final DateTime dueDate = DateTime.parse(dueDateString);
-        bool isLate = dueDate.isBefore(DateTime.now());
+        final bool isLate = dueDate.isBefore(DateTime.now());
 
         return ListTile(
           leading: Column(
@@ -82,7 +88,18 @@ class _StudentRecordState extends State<StudentRecord> {
             children: [
               ElevatedButton(
                 child: const Text('Return'),
-                onPressed: () {},
+                onPressed: () async {
+                  bool isReturned = await returnBook(bookId);
+                  if (isReturned) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Book returned"),
+                    ));
+                    // TODO: Refresh the list of books, and the parent list of students
+                    setState(() {});
+                  } else {
+                    // TODO: Error
+                  }
+                },
               ),
             ],
           ),
