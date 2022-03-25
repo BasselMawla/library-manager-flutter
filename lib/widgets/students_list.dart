@@ -1,3 +1,4 @@
+import 'package:cem7052_library/widgets/student_record.dart';
 import 'package:flutter/material.dart';
 
 import '../api_calls.dart';
@@ -52,7 +53,8 @@ class _StudentsListState extends State<StudentsList> {
 
         final index = i ~/ 2; // To ignore dividers
         Map currentStudent = studentsList[index];
-        String name = currentStudent['first_name'].toString() +
+        String username = currentStudent['username'].toString();
+        String studentName = currentStudent['first_name'].toString() +
             ' ' +
             currentStudent['last_name'].toString();
 
@@ -64,14 +66,36 @@ class _StudentsListState extends State<StudentsList> {
         return ListTile(
           leading: const Icon(Icons.person),
           title: Text(
-            name,
+            studentName,
             style: _biggerFont,
           ),
           trailing: Text(
             borrowingString,
           ),
+          onTap: () {
+            _pushStudentRoute(context, username, studentName);
+          },
         );
       },
+    );
+  }
+
+  void _pushStudentRoute(context, String username, String studentName) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) {
+          void refresh() {
+            setState(() {});
+          }
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Borrowing Record'),
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+            body: StudentRecord(username, studentName, refreshParent: refresh),
+          );
+        },
+      ),
     );
   }
 }

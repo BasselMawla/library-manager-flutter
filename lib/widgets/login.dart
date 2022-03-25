@@ -17,14 +17,14 @@ class _LoginFormState extends State<LoginForm> {
 
   final _midSizeFont = const TextStyle(fontSize: 17.0);
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    emailController.dispose();
-    passwordController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -38,15 +38,15 @@ class _LoginFormState extends State<LoginForm> {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Please log in or register:',
+              'Please log in or register',
               style: _midSizeFont,
             ),
           ),
           // Email text field
           TextFormField(
-            controller: emailController,
+            controller: _emailController,
             decoration: const InputDecoration(
-              hintText: AutofillHints.email,
+              hintText: 'Email',
             ),
             validator: (String? value) {
               if (value == null || value.isEmpty) {
@@ -57,9 +57,9 @@ class _LoginFormState extends State<LoginForm> {
           ),
           // Password text field
           TextFormField(
-            controller: passwordController,
+            controller: _passwordController,
             decoration: const InputDecoration(
-              hintText: AutofillHints.password,
+              hintText: 'Password',
             ),
             obscureText: true,
             validator: (String? value) {
@@ -74,11 +74,12 @@ class _LoginFormState extends State<LoginForm> {
             child: SizedBox(
               width: 100.0,
               child: ElevatedButton(
+                child: const Text('Log in'),
                 onPressed: () async {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
                   if (_formKey.currentState!.validate()) {
-                    await login(emailController.text, passwordController.text);
+                    await login(_emailController.text, _passwordController.text);
                     String token = await getJwtToken();
                     if (token.isEmpty) {
                       // TODO: Error try again
@@ -89,7 +90,6 @@ class _LoginFormState extends State<LoginForm> {
                     }
                   }
                 },
-                child: const Text('Log in'),
               ),
             ),
           ),

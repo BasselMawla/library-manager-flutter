@@ -8,16 +8,20 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  final colorPrimary = const Color(0xFF2679BD);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Coventry University Library',
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          backgroundColor: colorPrimary,
+        //brightness: Brightness.dark,
+        primaryColor: const Color(0xFF0066CB),
+        indicatorColor: Colors.white,
+        //fontFamily: 'Georgia',
+        textTheme: const TextTheme(
+          headline1: TextStyle(
+              fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.white),
+          // bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         ),
       ),
       home: const HomeTabBar(),
