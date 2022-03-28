@@ -78,7 +78,7 @@ class _StudentRecordState extends State<StudentRecord> {
                   : const Icon(Icons.book),
             ],
           ),
-          tileColor: isLate ? Colors.red[200] : Colors.white,
+          tileColor: isLate ? Colors.red[200] : Theme.of(context).canvasColor,
           title: Text(
             title,
             style: _biggerFont,

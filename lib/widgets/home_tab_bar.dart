@@ -47,9 +47,14 @@ class _HomeTabBarState extends State<HomeTabBar> {
                 .textTheme
                 .headline1, //TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
           ),
-          actions: const [
-            Icon(Icons.search),
-            Padding(
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                _pushSearchRoute(context);
+              },
+            ),
+            const Padding(
               // Overflow menu icon with padding
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Icon(Icons.more_vert),
@@ -121,6 +126,36 @@ class _HomeTabBarState extends State<HomeTabBar> {
               backgroundColor: Theme.of(context).primaryColor,
             ),
             body: const AddBook(),
+          );
+        },
+      ),
+    );
+  }
+
+  void _pushSearchRoute(context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const TextField(
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  labelStyle: TextStyle(color: Colors.white),
+
+                  hintText: 'Search for a book...',
+                  hintStyle: TextStyle(color: Colors.white),
+
+                  fillColor: Colors.white12,
+                  filled: true,
+                ),
+                autofocus: true,
+                cursorColor: Colors.white,
+              ),
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+            body: const Text('hi'),
           );
         },
       ),
