@@ -20,7 +20,6 @@ class _SearchListState extends State<SearchList> {
 
   @override
   Widget build(BuildContext context) {
-    print('search_list 1: $searchQuery');
     return Scaffold(
       appBar: AppBar(
         title: TextField(
@@ -39,10 +38,6 @@ class _SearchListState extends State<SearchList> {
             setState(() {
               searchQuery = value;
             });
-            /*setState(() {
-                    searchQuery = value;
-                    print('home_tab_bar.dart->onChanged->searchQuery: $searchQuery');
-                  });*/
           },
         ),
         backgroundColor: Theme.of(context).primaryColor,

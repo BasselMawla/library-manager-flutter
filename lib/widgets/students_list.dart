@@ -11,20 +11,17 @@ class StudentsList extends StatefulWidget {
 }
 
 class _StudentsListState extends State<StudentsList> {
-  late Future<Map> allStudents;
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  @override
-  void initState() {
-    super.initState();
-    allStudents = getAllStudents();
+  void refresh() {
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<Map>(
-        future: allStudents,
+        future: getAllStudents(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return buildStudentListView(snapshot.data!);
@@ -84,9 +81,6 @@ class _StudentsListState extends State<StudentsList> {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (context) {
-          void refresh() {
-            setState(() {});
-          }
           return Scaffold(
             appBar: AppBar(
               title: const Text('Borrowing Record'),

@@ -30,7 +30,6 @@ Future<Map> searchBooks(String searchQuery) async {
   });
 
   Map books = jsonDecode(response.body);
-  print('api_calls.dart->searchBooks->books: $books');
 
   return books;
 }
@@ -85,7 +84,7 @@ Future<bool> addBook(Map<String, dynamic> bookInfo) async {
   return false;
 }
 
-Future<bool> getBook(String bookId) async {
+Future<bool> returnBook(String bookId) async {
   var url = Uri.parse('$baseUrl/books/$bookId');
   final token = await getJwtToken();
 

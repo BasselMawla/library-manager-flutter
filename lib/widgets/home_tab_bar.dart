@@ -16,7 +16,6 @@ class HomeTabBar extends StatefulWidget {
 
 class _HomeTabBarState extends State<HomeTabBar> {
   void refresh() {
-    print('home_tab_bar.dart->refresh');
     setState(() {});
   }
 
@@ -44,7 +43,7 @@ class _HomeTabBarState extends State<HomeTabBar> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           title: Text(
-            'Coventry University Library',
+            'University Library',
             style: Theme.of(context)
                 .textTheme
                 .headline1, //TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),

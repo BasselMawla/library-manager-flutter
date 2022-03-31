@@ -11,30 +11,17 @@ class BooksList extends StatefulWidget {
 }
 
 class _BooksListState extends State<BooksList> {
-  late Future<Map> booksList;
   final _biggerFont = const TextStyle(fontSize: 18.0);
-
-  /*@override
-  void initState() {
-    super.initState();
-    if (widget.searchQuery == null) {
-      booksList = getAllBooks();
-    } else {
-      booksList = searchBooks(widget.searchQuery!);
-    }
-  }*/
 
   @override
   Widget build(BuildContext context) {
-    print('books_list.dart->widget.searchQuery: ${widget.searchQuery}');
     return Scaffold(
       body: FutureBuilder<Map>(
         future: widget.searchQuery == null
-            ? booksList = getAllBooks()
+            ? getAllBooks()
             : searchBooks(widget.searchQuery!),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            print('snapshot.data: ${snapshot.data}');
             return buildBookListView(snapshot.data!);
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
@@ -63,7 +50,8 @@ class _BooksListState extends State<BooksList> {
         Map currentBook = booksList[index];
         String title = currentBook['title'].toString();
         String author = currentBook['author'].toString();
-        String stockInfo = ' Stock: ' + currentBook['stock'].toString();
+        String stockInfo = 'Stock: ' + currentBook['stock'].toString();
+        String availableInfo = '\nAvailable: ' + currentBook['available'].toString();
         return ListTile(
           leading: const Icon(Icons.book),
           title: Text(
@@ -71,7 +59,8 @@ class _BooksListState extends State<BooksList> {
             style: _biggerFont,
           ),
           trailing: Text(
-            stockInfo,
+            stockInfo + availableInfo,
+            textAlign: TextAlign.center,
           ),
           subtitle: Padding(
             padding: const EdgeInsets.only(top: 4.0),

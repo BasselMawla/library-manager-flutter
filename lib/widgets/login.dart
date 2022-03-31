@@ -74,19 +74,22 @@ class _LoginFormState extends State<LoginForm> {
             child: SizedBox(
               width: 100.0,
               child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).primaryColor)),
                 child: const Text('Log in'),
                 onPressed: () async {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
                   if (_formKey.currentState!.validate()) {
-                    await login(_emailController.text, _passwordController.text);
+                    await login(
+                        _emailController.text, _passwordController.text);
                     String token = await getJwtToken();
                     if (token.isEmpty) {
                       // TODO: Error try again
                     } else {
                       setJwtToken(token);
-                      bool isLibrarian = await getIsLibrarian();
-                      widget.refreshParent(isLibrarian);
+                      widget.refreshParent();
                     }
                   }
                 },
@@ -97,6 +100,9 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(
             width: 100.0,
             child: ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).primaryColor)),
               onPressed: () async {
                 // TODO: setState(() {});
                 bool isLibrarian = await getIsLibrarian();
