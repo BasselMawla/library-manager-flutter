@@ -30,6 +30,24 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: getIsLoggedIn(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          // Logged in, show profile (borrowing record)
+          return buildLoginForm(context);
+        } else if (snapshot.hasError) {
+          // Not logged in, show login form
+          return buildLoginForm(context);
+        }
+
+        // Show a loading spinner.
+        return const CircularProgressIndicator();
+      },
+    );
+  }
+
+  Form buildLoginForm(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
@@ -82,14 +100,26 @@ class _LoginFormState extends State<LoginForm> {
                   // Validate will return true if the form is valid, or false if
                   // the form is invalid.
                   if (_formKey.currentState!.validate()) {
-                    await login(
+                    int loginStatusCode = await login(
                         _emailController.text, _passwordController.text);
-                    String token = await getJwtToken();
-                    if (token.isEmpty) {
-                      // TODO: Error try again
-                    } else {
-                      setJwtToken(token);
+                    if (loginStatusCode == 200) {
+                      // Success
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Logged in successfully!"),
+                      ));
+                      setState(() {});
                       widget.refreshParent();
+                    } else if (loginStatusCode == 404) {
+                      // Not found
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Wrong username or password!"),
+                      ));
+                    } else {
+                      // Catch-all errors
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                            "Something went wrong. Please try again later."),
+                      ));
                     }
                   }
                 },

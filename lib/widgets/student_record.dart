@@ -192,7 +192,10 @@ class _StudentRecordState extends State<StudentRecord> {
                       setState(() {});
                       widget.refreshParent();
                     } else {
-                      // TODO: Error
+                      // Catch-all errors
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Something went wrong. Please try again later."),
+                      ));
                     }
                   },
                 ),

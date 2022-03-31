@@ -19,7 +19,6 @@ Future<Map> getAllBooks() async {
   return books;
 }
 
-
 Future<Map> searchBooks(String searchQuery) async {
   var url = Uri.parse('$baseUrl/books?q=$searchQuery');
   final token = await getJwtToken();
@@ -33,6 +32,7 @@ Future<Map> searchBooks(String searchQuery) async {
 
   return books;
 }
+
 Future<Map> getAllStudents() async {
   var url = Uri.parse('$baseUrl/students');
   final token = await getJwtToken();
@@ -45,7 +45,7 @@ Future<Map> getAllStudents() async {
   return jsonDecode(response.body);
 }
 
-Future<void> login(String username, String password) async {
+Future<int> login(String username, String password) async {
   var url = Uri.parse('$baseUrl/accounts');
 
   final response = await http.get(
@@ -57,12 +57,18 @@ Future<void> login(String username, String password) async {
     },
   );
 
-  Map body = jsonDecode(response.body);
-  String token = body['jwt'];
-  bool isLibrarian = body['is_librarian'] == 1 ? true : false;
+  if (response.statusCode == 200) {
+    Map body = jsonDecode(response.body);
+    String token = body['jwt'];
+    bool isLibrarian = body['is_librarian'] == 1 ? true : false;
 
-  await setJwtToken(token);
-  await setIsLibrarian(isLibrarian);
+    await setJwtToken(token);
+    await setIsLoggedIn(true);
+    await setIsLibrarian(isLibrarian);
+    return 200;
+  } else {
+    return response.statusCode;
+  }
 }
 
 Future<bool> addBook(Map<String, dynamic> bookInfo) async {
@@ -78,7 +84,7 @@ Future<bool> addBook(Map<String, dynamic> bookInfo) async {
     body: jsonEncode(bookInfo),
   );
 
-  if(response.statusCode == 204) {
+  if (response.statusCode == 204) {
     return true;
   }
   return false;
@@ -96,7 +102,7 @@ Future<bool> returnBook(String bookId) async {
     },
   );
 
-  if(response.statusCode == 204) {
+  if (response.statusCode == 204) {
     return true;
   }
   return false;
@@ -105,10 +111,9 @@ Future<bool> returnBook(String bookId) async {
 Future<int> loanBook(String username, String uuid) async {
   var url = Uri.parse('$baseUrl/students/$username');
   Map<String, dynamic> bodyMap = {'uuid': uuid};
-  
+
   final token = await getJwtToken();
 
-  
   final response = await http.post(
     url,
     headers: {
