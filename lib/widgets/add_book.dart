@@ -161,7 +161,6 @@ class _AddBookState extends State<AddBook> {
                           };
                           bool bookWasAdded = await addBook(bookInfo);
                           if(bookWasAdded) {
-                            print('Book added successfully');
                             // TODO: Show success message and redirect
                           }
                         } else {

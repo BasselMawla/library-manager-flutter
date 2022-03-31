@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import '../api_calls.dart';
 
@@ -17,23 +18,23 @@ class StudentRecord extends StatefulWidget {
 }
 
 class _StudentRecordState extends State<StudentRecord> {
-  late Future<Map> studentRecord;
   final _biggerFont = const TextStyle(fontSize: 18.0);
-
-  @override
-  void initState() {
-    super.initState();
-    studentRecord = getStudentRecord(widget.username);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<Map>(
-        future: studentRecord,
+        future: getStudentRecord(widget.username),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return buildStudentRecordView(snapshot.data!);
+            List borrowedBooks = snapshot.data!['borrowed_books'];
+            if (borrowedBooks.isEmpty) {
+              SchedulerBinding.instance?.addPostFrameCallback((_) {
+                Navigator.of(context).pop();
+              });
+            } else {
+              return buildStudentRecordView(snapshot.data!);
+            }
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');
           }
@@ -49,7 +50,6 @@ class _StudentRecordState extends State<StudentRecord> {
     List borrowedBooks = studentRecord['borrowed_books'];
     return ListView.builder(
       padding: const EdgeInsets.all(16.0),
-      
       itemCount: borrowedBooks.length * 2,
       itemBuilder: (context, i) {
         if (i.isOdd) {
@@ -78,7 +78,7 @@ class _StudentRecordState extends State<StudentRecord> {
                   : const Icon(Icons.book),
             ],
           ),
-          tileColor: isLate ? Colors.red[200] : Colors.white,
+          tileColor: isLate ? Colors.red[200] : Theme.of(context).canvasColor,
           title: Text(
             title,
             style: _biggerFont,
@@ -87,6 +87,9 @@ class _StudentRecordState extends State<StudentRecord> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).primaryColor)),
                 child: const Text('Return'),
                 onPressed: () async {
                   bool isReturned = await returnBook(bookId);
@@ -96,6 +99,7 @@ class _StudentRecordState extends State<StudentRecord> {
                     ));
                     // TODO: Refresh the list of books, and the parent list of students
                     setState(() {});
+                    widget.refreshParent();
                   } else {
                     // TODO: Error
                   }

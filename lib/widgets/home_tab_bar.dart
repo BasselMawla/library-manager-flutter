@@ -1,3 +1,4 @@
+import 'package:cem7052_library/widgets/search_list.dart';
 import 'package:cem7052_library/widgets/students_list.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class HomeTabBar extends StatefulWidget {
 }
 
 class _HomeTabBarState extends State<HomeTabBar> {
-  void refresh(bool isLibrarian) {
+  void refresh() {
     setState(() {});
   }
 
@@ -42,14 +43,19 @@ class _HomeTabBarState extends State<HomeTabBar> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           title: Text(
-            'Coventry University Library',
+            'University Library',
             style: Theme.of(context)
                 .textTheme
                 .headline1, //TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
           ),
-          actions: const [
-            Icon(Icons.search),
-            Padding(
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                _pushSearchRoute(context);
+              },
+            ),
+            const Padding(
               // Overflow menu icon with padding
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Icon(Icons.more_vert),
@@ -89,6 +95,7 @@ class _HomeTabBarState extends State<HomeTabBar> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: LoginForm(refreshParent: refresh),
+              // child: if (isLoggedIn) ? ProfileRecord : LoginForm(refreshParent: refresh),
             ),
           ),
         ),
@@ -111,6 +118,7 @@ class _HomeTabBarState extends State<HomeTabBar> {
     return Container();
   }
 
+  // TODO: Finish
   void _pushAddBookRoute(context) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
@@ -124,6 +132,14 @@ class _HomeTabBarState extends State<HomeTabBar> {
           );
         },
       ),
+    );
+  }
+
+  void _pushSearchRoute(context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (context) {
+        return const SearchList();
+      }),
     );
   }
 }

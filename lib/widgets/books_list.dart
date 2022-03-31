@@ -3,27 +3,23 @@ import 'package:flutter/material.dart';
 import '../api_calls.dart';
 
 class BooksList extends StatefulWidget {
-  const BooksList({Key? key}) : super(key: key);
+  final String? searchQuery;
 
+  const BooksList({this.searchQuery, Key? key}) : super(key: key);
   @override
   State<BooksList> createState() => _BooksListState();
 }
 
 class _BooksListState extends State<BooksList> {
-  late Future<Map> allBooks;
   final _biggerFont = const TextStyle(fontSize: 18.0);
-
-  @override
-  void initState() {
-    super.initState();
-    allBooks = getAllBooks();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<Map>(
-        future: allBooks,
+        future: widget.searchQuery == null
+            ? getAllBooks()
+            : searchBooks(widget.searchQuery!),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return buildBookListView(snapshot.data!);
@@ -54,7 +50,8 @@ class _BooksListState extends State<BooksList> {
         Map currentBook = booksList[index];
         String title = currentBook['title'].toString();
         String author = currentBook['author'].toString();
-        String stockInfo = ' Stock: ' + currentBook['stock'].toString();
+        String stockInfo = 'Stock: ' + currentBook['stock'].toString();
+        String availableInfo = '\nAvailable: ' + currentBook['available'].toString();
         return ListTile(
           leading: const Icon(Icons.book),
           title: Text(
@@ -62,7 +59,8 @@ class _BooksListState extends State<BooksList> {
             style: _biggerFont,
           ),
           trailing: Text(
-            stockInfo,
+            stockInfo + availableInfo,
+            textAlign: TextAlign.center,
           ),
           subtitle: Padding(
             padding: const EdgeInsets.only(top: 4.0),
