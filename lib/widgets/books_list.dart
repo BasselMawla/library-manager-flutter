@@ -3,29 +3,38 @@ import 'package:flutter/material.dart';
 import '../api_calls.dart';
 
 class BooksList extends StatefulWidget {
-  const BooksList({Key? key}) : super(key: key);
+  final String? searchQuery;
 
+  const BooksList({this.searchQuery, Key? key}) : super(key: key);
   @override
   State<BooksList> createState() => _BooksListState();
 }
 
 class _BooksListState extends State<BooksList> {
-  late Future<Map> allBooks;
+  late Future<Map> booksList;
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  @override
+  /*@override
   void initState() {
     super.initState();
-    allBooks = getAllBooks();
-  }
+    if (widget.searchQuery == null) {
+      booksList = getAllBooks();
+    } else {
+      booksList = searchBooks(widget.searchQuery!);
+    }
+  }*/
 
   @override
   Widget build(BuildContext context) {
+    print('books_list.dart->widget.searchQuery: ${widget.searchQuery}');
     return Scaffold(
       body: FutureBuilder<Map>(
-        future: allBooks,
+        future: widget.searchQuery == null
+            ? booksList = getAllBooks()
+            : searchBooks(widget.searchQuery!),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            print('snapshot.data: ${snapshot.data}');
             return buildBookListView(snapshot.data!);
           } else if (snapshot.hasError) {
             return Text('${snapshot.error}');

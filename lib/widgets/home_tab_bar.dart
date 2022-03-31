@@ -1,3 +1,4 @@
+import 'package:cem7052_library/widgets/search_list.dart';
 import 'package:cem7052_library/widgets/students_list.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,8 @@ class HomeTabBar extends StatefulWidget {
 }
 
 class _HomeTabBarState extends State<HomeTabBar> {
-  void refresh(bool isLibrarian) {
+  void refresh() {
+    print('home_tab_bar.dart->refresh');
     setState(() {});
   }
 
@@ -94,6 +96,7 @@ class _HomeTabBarState extends State<HomeTabBar> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: LoginForm(refreshParent: refresh),
+              // child: if (isLoggedIn) ? ProfileRecord : LoginForm(refreshParent: refresh),
             ),
           ),
         ),
@@ -116,6 +119,7 @@ class _HomeTabBarState extends State<HomeTabBar> {
     return Container();
   }
 
+  // TODO: Finish
   void _pushAddBookRoute(context) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
@@ -134,31 +138,9 @@ class _HomeTabBarState extends State<HomeTabBar> {
 
   void _pushSearchRoute(context) {
     Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const TextField(
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  labelStyle: TextStyle(color: Colors.white),
-
-                  hintText: 'Search for a book...',
-                  hintStyle: TextStyle(color: Colors.white),
-
-                  fillColor: Colors.white12,
-                  filled: true,
-                ),
-                autofocus: true,
-                cursorColor: Colors.white,
-              ),
-              backgroundColor: Theme.of(context).primaryColor,
-            ),
-            body: const Text('hi'),
-          );
-        },
-      ),
+      MaterialPageRoute<void>(builder: (context) {
+        return const SearchList();
+      }),
     );
   }
 }

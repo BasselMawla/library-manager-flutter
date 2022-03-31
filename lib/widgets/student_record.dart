@@ -89,7 +89,7 @@ class _StudentRecordState extends State<StudentRecord> {
               ElevatedButton(
                 child: const Text('Return'),
                 onPressed: () async {
-                  bool isReturned = await returnBook(bookId);
+                  bool isReturned = await getBook(bookId);
                   if (isReturned) {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("Book returned"),
