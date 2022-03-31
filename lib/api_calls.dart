@@ -102,6 +102,25 @@ Future<bool> returnBook(String bookId) async {
   return false;
 }
 
+Future<int> loanBook(String username, String uuid) async {
+  var url = Uri.parse('$baseUrl/students/$username');
+  Map<String, dynamic> bodyMap = {'uuid': uuid};
+  
+  final token = await getJwtToken();
+
+  
+  final response = await http.post(
+    url,
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    },
+    body: jsonEncode(bodyMap),
+  );
+
+  return response.statusCode;
+}
+
 Future<Map> getStudentRecord(String username) async {
   var url = Uri.parse('$baseUrl/students/$username');
   final token = await getJwtToken();

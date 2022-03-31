@@ -22,7 +22,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
+    // Clean up the controllers when the widget is disposed.
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
