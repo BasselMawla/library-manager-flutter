@@ -29,9 +29,7 @@ class _StudentRecordState extends State<StudentRecord> {
           if (snapshot.hasData) {
             List borrowedBooks = snapshot.data!['borrowed_books'];
             if (borrowedBooks.isEmpty) {
-              SchedulerBinding.instance?.addPostFrameCallback((_) {
-                Navigator.of(context).pop();
-              });
+              return Center(child: Text('No borrowed books', style: _biggerFont));
             } else {
               return buildStudentRecordView(snapshot.data!);
             }
