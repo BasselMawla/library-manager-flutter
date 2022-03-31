@@ -1,3 +1,4 @@
+import 'package:cem7052_library/widgets/profile_record.dart';
 import 'package:flutter/material.dart';
 
 import '../api_calls.dart';
@@ -30,19 +31,16 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: getIsLoggedIn(),
+    return FutureBuilder<String>(
+      future: getUsername(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
           // Logged in, show profile (borrowing record)
-          return buildLoginForm(context);
-        } else if (snapshot.hasError) {
+          return ProfileRecord(snapshot.data!);
+        } else {
           // Not logged in, show login form
           return buildLoginForm(context);
         }
-
-        // Show a loading spinner.
-        return const CircularProgressIndicator();
       },
     );
   }

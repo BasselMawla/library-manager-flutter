@@ -55,10 +55,12 @@ class _HomeTabBarState extends State<HomeTabBar> {
                 _pushSearchRoute(context);
               },
             ),
-            const Padding(
-              // Overflow menu icon with padding
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Icon(Icons.more_vert),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: IconButton(
+                icon: const Icon(Icons.more_vert),
+                onPressed: () {},
+              ),
             ),
           ],
           bottom: TabBar(

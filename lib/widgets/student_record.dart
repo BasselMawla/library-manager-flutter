@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../api_calls.dart';
 
-// TODO: Add textbox for borrowing with UUID of book
-
 class StudentRecord extends StatefulWidget {
-  final String username, studentName;
+  final String username;
   final Function refreshParent;
 
-  const StudentRecord(this.username, this.studentName,
-      {Key? key, required this.refreshParent})
+  const StudentRecord(this.username, {Key? key, required this.refreshParent})
       : super(key: key);
 
   @override
@@ -78,23 +75,29 @@ class _StudentRecordState extends State<StudentRecord> {
                           // the form is invalid.
                           if (_formKey.currentState!.validate()) {
                             // Loan book
-                            int loanStatusCode = await loanBook(widget.username, _uuidController.text);
+                            int loanStatusCode = await loanBook(
+                                widget.username, _uuidController.text);
                             if (loanStatusCode == 204) {
                               // Successfully loaned
-                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
                                 content: Text("Book loaned"),
                               ));
                               setState(() {});
                               widget.refreshParent();
                             } else if (loanStatusCode == 409) {
                               // Already borrowed
-                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                content: Text("Not available! Book already borrowed."),
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text(
+                                    "Not available! Book already borrowed."),
                               ));
                             } else {
                               // Catch-all errors
-                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                content: Text("Something went wrong. Please try again later."),
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text(
+                                    "Something went wrong. Please try again later."),
                               ));
                             }
                           }
@@ -194,7 +197,8 @@ class _StudentRecordState extends State<StudentRecord> {
                     } else {
                       // Catch-all errors
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("Something went wrong. Please try again later."),
+                        content: Text(
+                            "Something went wrong. Please try again later."),
                       ));
                     }
                   },

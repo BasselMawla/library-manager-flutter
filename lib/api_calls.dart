@@ -63,7 +63,7 @@ Future<int> login(String username, String password) async {
     bool isLibrarian = body['is_librarian'] == 1 ? true : false;
 
     await setJwtToken(token);
-    await setIsLoggedIn(true);
+    await setUsername(username);
     await setIsLibrarian(isLibrarian);
     return 200;
   } else {

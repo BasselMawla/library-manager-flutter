@@ -20,22 +20,22 @@ Future<void> setJwtToken(String token) async {
   savedPrefs.setString('jwt', token);
 }
 
-Future<bool> getIsLoggedIn() async {
+Future<String> getUsername() async {
   final savedPrefs = await SharedPreferences.getInstance();
   try {
-    final bool? isLoggedIn = savedPrefs.getBool('isLoggedIn');
-    if (isLoggedIn == null) {
-      return false;
+    final String? username = savedPrefs.getString('username');
+    if (username == null) {
+      return '';
     }
-    return isLoggedIn;
+    return username;
   } catch (e) {
-    return false;
+    return '';
   }
 }
 
-Future<void> setIsLoggedIn(bool isLoggedIn) async {
+Future<void> setUsername(String username) async {
   final savedPrefs = await SharedPreferences.getInstance();
-  savedPrefs.setBool('isLoggedIn', isLoggedIn);
+  savedPrefs.setString('username', username);
 }
 
 Future<bool> getIsLibrarian() async {

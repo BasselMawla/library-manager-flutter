@@ -83,10 +83,10 @@ class _StudentsListState extends State<StudentsList> {
         builder: (context) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('Borrowing Record'),
+              title: Text(studentName),
               backgroundColor: Theme.of(context).primaryColor,
             ),
-            body: StudentRecord(username, studentName, refreshParent: refresh),
+            body: StudentRecord(username, refreshParent: refresh),
           );
         },
       ),
