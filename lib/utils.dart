@@ -1,7 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-//bool _isLibrarian = false;
-
 Future<String> getJwtToken() async {
   final savedPrefs = await SharedPreferences.getInstance();
   try {
