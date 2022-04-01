@@ -68,6 +68,7 @@ class _HomeTabBarState extends State<HomeTabBar> {
               Padding(
                 padding: const EdgeInsets.only(right: 16),
                 child: PopupMenuButton(
+                  offset: const Offset(-10, 45),
                   icon: const Icon(Icons.more_vert),
                   itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                     PopupMenuItem(
