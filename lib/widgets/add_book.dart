@@ -20,6 +20,9 @@ class _AddBookState extends State<AddBook> {
   final _deweyController = TextEditingController();
   int _quantity = 1;
 
+  final loanPeriods = ['24 hours', '2 days', '1 week', '2 weeks', '1 month'];
+  String? _selectedPeriod = '1 week';
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -34,6 +37,7 @@ class _AddBookState extends State<AddBook> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32.0),
+      // TODO: Implement more detailed validation
       child: Form(
         key: _formKey,
         child: Column(
@@ -41,14 +45,7 @@ class _AddBookState extends State<AddBook> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(
-                'Enter book info',
-                style: _midSizeFont,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.only(bottom: 6.0),
               child: TextFormField(
                 controller: _titleController,
                 decoration: const InputDecoration(
@@ -65,7 +62,7 @@ class _AddBookState extends State<AddBook> {
             ),
             // Password text field
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
               child: TextFormField(
                 controller: _authorController,
                 decoration: const InputDecoration(
@@ -81,7 +78,7 @@ class _AddBookState extends State<AddBook> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
               child: TextFormField(
                 controller: _isbnController,
                 decoration: const InputDecoration(
@@ -97,7 +94,7 @@ class _AddBookState extends State<AddBook> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
               child: TextFormField(
                 controller: _deweyController,
                 decoration: const InputDecoration(
@@ -112,18 +109,30 @@ class _AddBookState extends State<AddBook> {
                 },
               ),
             ),
+            // TODO: Actually add to the added book
             Padding(
-              padding: const EdgeInsets.only(top: 16.0),
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
+              child: DropdownButtonFormField<String>(
+                decoration: const InputDecoration(
+                  labelText: 'Loan period',
+                  border: OutlineInputBorder(),
+                ),
+                value: _selectedPeriod,
+                items: loanPeriods.map(buildDropdownItem).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedPeriod = value;
+                  });
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 6.0),
               child: Text(
                 'Quantity',
                 style: _midSizeFont,
               ),
             ),
-            // TODO: Drop down loan period
-            DropdownButtonFormField(items: const <DropdownMenuItem>[
-              DropdownMenuItem(value: 'test1', child: Text('test1')),
-              DropdownMenuItem(value: 'test2', child: Text('test2')),
-            ], onChanged: null),
             Slider(
               min: 1,
               max: 10,
@@ -136,61 +145,68 @@ class _AddBookState extends State<AddBook> {
                 });
               },
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Scan QR Code', style: _midSizeFont),
-                  ),
-                  SizedBox(
-                    width: 100.0,
-                    child: ElevatedButton(
-                      child: const Text('Add'),
-                      onPressed: () async {
-                        // Validate will return true if the form is valid, or false if
-                        // the form is invalid.
-                        if (_formKey.currentState!.validate()) {
-                          Map<String, dynamic> bookInfo = {
-                            'isbn': _isbnController.text,
-                            'title': _titleController.text,
-                            'author': _authorController.text,
-                            'dewey_number': _deweyController.text,
-                            'quantity': _quantity,
-                          };
-                          bool bookWasAdded = await addBook(bookInfo);
-                          if(bookWasAdded) {
-                            // TODO: Show success message and redirect
-                          }
-                        } else {
-                          // Error
+            Column(
+              children: [
+                SizedBox(
+                  width: 100.0,
+                  child: ElevatedButton(
+                    child: const Text('Add'),
+                    onPressed: () async {
+                      // Validate will return true if the form is valid, or false if
+                      // the form is invalid.
+                      if (_formKey.currentState!.validate()) {
+                        Map<String, dynamic> bookInfo = {
+                          'isbn': _isbnController.text,
+                          'title': _titleController.text,
+                          'author': _authorController.text,
+                          'dewey_number': _deweyController.text,
+                          'quantity': _quantity,
+                        };
+                        bool bookWasAdded = await addBook(bookInfo);
+                        if (bookWasAdded) {
+                          // TODO: Show success message and redirect
                         }
+                      } else {
+                        // Error
+                      }
+                    },
+                    //child: const Icon(Icons.camera),//const Text('Add'),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Scan QR Code', style: _midSizeFont),
+                ),
+                SizedBox(
+                  width: 60.0,
+                  height: 60.0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100.0),
+                      color: Colors.lightBlueAccent,
+                    ),
+                    child: IconButton(
+                      onPressed: () async {
+                        // Scan QR Code
                       },
+                      icon: const Icon(Icons.qr_code),
                       //child: const Icon(Icons.camera),//const Text('Add'),
                     ),
-                  ),SizedBox(
-                    width: 60.0,
-                    height: 60.0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100.0),
-                        color: Colors.lightBlueAccent,
-                      ),
-                      child: IconButton(
-                        onPressed: () async {
-                          // Scan QR Code
-                        },
-                        icon: const Icon(Icons.qr_code),
-                        //child: const Icon(Icons.camera),//const Text('Add'),
-                      ),
-                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  DropdownMenuItem<String> buildDropdownItem(String item) {
+    return DropdownMenuItem(
+      value: item,
+      child: Text(
+        item,
       ),
     );
   }

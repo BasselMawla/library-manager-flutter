@@ -71,6 +71,7 @@ class _HomeTabBarState extends State<HomeTabBar> {
                   icon: const Icon(Icons.more_vert),
                   itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                     PopupMenuItem(
+                      height: 0,
                       child: const Text('Log out'),
                       onTap: () async {
                         await logOut();

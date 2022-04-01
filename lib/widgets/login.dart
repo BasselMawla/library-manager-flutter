@@ -115,12 +115,17 @@ class _LoginFormState extends State<LoginForm> {
                       ));
                       setState(() {});
                       widget.refreshParent();
-                    } else if (loginStatusCode == 404) {
+                    } else if (loginStatusCode == 403) {
                       // Not found
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("Wrong username or password!"),
                       ));
-                    } else {
+                    } else if (loginStatusCode == 404) {
+                      // Not found
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Username does not exits."),
+                      ));
+                    }else {
                       // Catch-all errors
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
