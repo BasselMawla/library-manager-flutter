@@ -136,7 +136,6 @@ class _HomeTabBarState extends State<HomeTabBar> {
     return Container();
   }
 
-  // TODO: Finish
   void _pushAddBookRoute(context) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(

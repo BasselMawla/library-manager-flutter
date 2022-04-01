@@ -37,7 +37,6 @@ class _AddBookState extends State<AddBook> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32.0),
-      // TODO: Implement more detailed validation
       child: Form(
         key: _formKey,
         child: Column(
@@ -109,7 +108,6 @@ class _AddBookState extends State<AddBook> {
                 },
               ),
             ),
-            // TODO: Actually add to the added book
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 6.0),
               child: DropdownButtonFormField<String>(
@@ -164,7 +162,11 @@ class _AddBookState extends State<AddBook> {
                         };
                         bool bookWasAdded = await addBook(bookInfo);
                         if (bookWasAdded) {
-                          // TODO: Show success message and redirect
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Book added'),
+                          ));
+                          setState(() {});
                         }
                       } else {
                         // Error

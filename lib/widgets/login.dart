@@ -145,7 +145,6 @@ class _LoginFormState extends State<LoginForm> {
                   backgroundColor: MaterialStateProperty.all<Color>(
                       Theme.of(context).primaryColor)),
               onPressed: () async {
-                // TODO: setState(() {});
                 bool isLibrarian = await getIsLibrarian();
 
                 widget.refreshParent(isLibrarian);

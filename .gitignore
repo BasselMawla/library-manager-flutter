@@ -50,3 +50,5 @@ app.*.map.json
 /android
 /ios
 lib/test.dart
+.gradle/
+local.properties
