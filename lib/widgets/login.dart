@@ -39,7 +39,15 @@ class _LoginFormState extends State<LoginForm> {
           return ProfileRecord(snapshot.data!);
         } else {
           // Not logged in, show login form
-          return buildLoginForm(context);
+          return Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints.tight(const Size(300.0, 300.0)),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: buildLoginForm(context),
+              ),
+            ),
+          );
         }
       },
     );

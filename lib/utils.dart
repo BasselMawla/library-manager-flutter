@@ -55,3 +55,17 @@ Future<void> setIsLibrarian(bool isLibrarian) async {
   final savedPrefs = await SharedPreferences.getInstance();
   savedPrefs.setBool('isLibrarian', isLibrarian);
 }
+
+Future<Map> getUserInfo() async {
+  String username = await getUsername();
+  bool isLibrarian = await getIsLibrarian();
+
+  return {'username': username, 'isLibrarian': isLibrarian};
+}
+
+Future<void> logOut() async {
+  final savedPrefs = await SharedPreferences.getInstance();
+  savedPrefs.remove('username');
+  savedPrefs.remove('jwt');
+  savedPrefs.setBool('isLibrarian', false);
+}

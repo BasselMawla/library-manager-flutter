@@ -21,13 +21,18 @@ class _HomeTabBarState extends State<HomeTabBar> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: getIsLibrarian(),
+    return FutureBuilder<Map>(
+      future: getUserInfo(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return buildHomeTabController(snapshot.data!);
+          String username = snapshot.data!['username'];
+          if (username.isNotEmpty) {
+            return buildHomeTabController(true, snapshot.data!['isLibrarian']);
+          } else {
+            return buildHomeTabController(false, snapshot.data!['isLibrarian']);
+          }
         } else if (snapshot.hasError) {
-          return buildHomeTabController(false);
+          return buildHomeTabController(false, false);
         }
 
         // Show a loading spinner.
@@ -36,7 +41,8 @@ class _HomeTabBarState extends State<HomeTabBar> {
     );
   }
 
-  DefaultTabController buildHomeTabController(bool isLibrarian) {
+  DefaultTabController buildHomeTabController(
+      bool isLoggedIn, bool isLibrarian) {
     return DefaultTabController(
       length: isLibrarian ? 3 : 2,
       child: Scaffold(
@@ -49,19 +55,36 @@ class _HomeTabBarState extends State<HomeTabBar> {
                 .headline1, //TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                _pushSearchRoute(context);
-              },
-            ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.only(right: 16),
               child: IconButton(
-                icon: const Icon(Icons.more_vert),
-                onPressed: () {},
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  _pushSearchRoute(context);
+                },
               ),
             ),
+            if (isLoggedIn)
+              Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: PopupMenuButton(
+                  icon: const Icon(Icons.more_vert),
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                    PopupMenuItem(
+                      child: const Text('Log out'),
+                      onTap: () async {
+                        await logOut();
+
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text("Logged out"),
+                        ));
+                        setState(() {});
+                      },
+                    ),
+                  ],
+                ),
+              ),
           ],
           bottom: TabBar(
             tabs: [
@@ -91,16 +114,7 @@ class _HomeTabBarState extends State<HomeTabBar> {
         if (isLibrarian) const StudentsList(),
 
         // Profile tab
-        Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints.tight(const Size(300.0, 300.0)),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: LoginForm(refreshParent: refresh),
-              // child: if (isLoggedIn) ? ProfileRecord : LoginForm(refreshParent: refresh),
-            ),
-          ),
-        ),
+        LoginForm(refreshParent: refresh),
       ],
     );
   }
