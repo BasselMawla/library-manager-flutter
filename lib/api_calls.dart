@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:cem7052_library/utils.dart';
+import 'package:library_manager/utils.dart';
 import 'package:http/http.dart' as http;
 
 const baseUrl = 'https://mobile-library-api.herokuapp.com';

@@ -1,4 +1,4 @@
-import 'package:cem7052_library/widgets/student_record.dart';
+import 'package:library_manager/widgets/student_record.dart';
 import 'package:flutter/material.dart';
 
 import '../api_calls.dart';

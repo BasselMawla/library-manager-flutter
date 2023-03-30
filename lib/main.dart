@@ -1,4 +1,4 @@
-import 'package:cem7052_library/widgets/home_tab_bar.dart';
+import 'package:library_manager/widgets/home_tab_bar.dart';
 import 'package:flutter/material.dart';
 
 void main() {

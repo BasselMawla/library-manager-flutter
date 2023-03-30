@@ -1,4 +1,4 @@
-import 'package:cem7052_library/widgets/profile_record.dart';
+import 'package:library_manager/widgets/profile_record.dart';
 import 'package:flutter/material.dart';
 
 import '../api_calls.dart';
@@ -125,7 +125,7 @@ class _LoginFormState extends State<LoginForm> {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text("Username does not exits."),
                       ));
-                    }else {
+                    } else {
                       // Catch-all errors
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(

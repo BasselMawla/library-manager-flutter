@@ -1,5 +1,5 @@
-import 'package:cem7052_library/widgets/search_list.dart';
-import 'package:cem7052_library/widgets/students_list.dart';
+import 'package:library_manager/widgets/search_list.dart';
+import 'package:library_manager/widgets/students_list.dart';
 import 'package:flutter/material.dart';
 
 import '../utils.dart';
