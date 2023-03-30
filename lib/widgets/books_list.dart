@@ -17,7 +17,7 @@ class _BooksListState extends State<BooksList> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<Map>(
-        future: widget.searchQuery == null
+        future: widget.searchQuery == null || widget.searchQuery!.isEmpty
             ? getAllBooks()
             : searchBooks(widget.searchQuery!),
         builder: (context, snapshot) {
@@ -51,7 +51,8 @@ class _BooksListState extends State<BooksList> {
         String title = currentBook['title'].toString();
         String author = currentBook['author'].toString();
         String stockInfo = 'Stock: ' + currentBook['stock'].toString();
-        String availableInfo = '\nAvailable: ' + currentBook['available'].toString();
+        String availableInfo =
+            '\nAvailable: ' + currentBook['available'].toString();
         return ListTile(
           leading: const Icon(Icons.book),
           title: Text(
