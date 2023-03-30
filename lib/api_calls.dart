@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:library_manager/utils.dart';
 import 'package:http/http.dart' as http;
 
-const baseUrl = 'https://mobile-library-api.herokuapp.com';
+const baseUrl = 'https://library-manager-rest-api.herokuapp.com';
 
 Future<Map> getAllBooks() async {
   var url = Uri.parse('$baseUrl/books');
